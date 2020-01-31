@@ -1,19 +1,25 @@
 package com.rohit.saga.order.service.aggregate;
 
+import com.rohit.saga.core.api.command.CreateOrderCommand;
+import com.rohit.saga.core.api.command.UpdateOrderStatusCommand;
+import com.rohit.saga.core.api.event.OrderCreatedEvent;
+import com.rohit.saga.core.api.event.OrderUpdatedEvent;
+import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
+import org.axonframework.modelling.command.AggregateIdentifier;
+import org.axonframework.modelling.command.AggregateLifecycle;
+import org.axonframework.spring.stereotype.Aggregate;
+
+import java.math.BigDecimal;
 
 @Aggregate
 public class OrderAggregate {
 
     @AggregateIdentifier
     private String orderId;
-
     private ItemType itemType;
-
     private BigDecimal price;
-
     private String currency;
-
     private OrderStatus orderStatus;
 
     public OrderAggregate() {
