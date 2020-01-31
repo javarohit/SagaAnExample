@@ -1,5 +1,6 @@
 package com.rohit.saga.order.service.saga;
 
+
 import com.rohit.saga.core.api.command.CreateInvoiceCommand;
 import com.rohit.saga.core.api.command.CreateShippingCommand;
 import com.rohit.saga.core.api.command.UpdateOrderStatusCommand;
@@ -25,7 +26,7 @@ public class OrderManagementSaga {
 
     @StartSaga
     @SagaEventHandler(associationProperty = "orderId")
-    public void handle(OrderCreatedEvent orderCreatedEvent) {
+    public void handle(OrderCreatedEvent orderCreatedEvent){
         String paymentId = UUID.randomUUID().toString();
         System.out.println("Saga invoked");
 
@@ -39,7 +40,7 @@ public class OrderManagementSaga {
     }
 
     @SagaEventHandler(associationProperty = "paymentId")
-    public void handle(InvoiceCreatedEvent invoiceCreatedEvent) {
+    public void handle(InvoiceCreatedEvent invoiceCreatedEvent){
         String shippingId = UUID.randomUUID().toString();
 
         System.out.println("Saga continued");
@@ -52,12 +53,12 @@ public class OrderManagementSaga {
     }
 
     @SagaEventHandler(associationProperty = "orderId")
-    public void handle(OrderShippedEvent orderShippedEvent) {
+    public void handle(OrderShippedEvent orderShippedEvent){
         commandGateway.send(new UpdateOrderStatusCommand(orderShippedEvent.orderId, String.valueOf(OrderStatus.SHIPPED)));
     }
 
     @SagaEventHandler(associationProperty = "orderId")
-    public void handle(OrderUpdatedEvent orderUpdatedEvent) {
+    public void handle(OrderUpdatedEvent orderUpdatedEvent){
         SagaLifecycle.end();
     }
 }
